@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import SectionHeader from './SectionHeader';
 import ProjectCard from './ProjectCard';
 import { projectsData, projectCategories } from '../data/projects';
-import { Box, Layers, Filter } from 'lucide-react';
+import { Box, Layers, Sparkles } from 'lucide-react';
 
 export default function FeaturedWork() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [hoveredProjectId, setHoveredProjectId] = useState(null);
 
   const filteredProjects = activeCategory === 'all'
     ? projectsData
@@ -26,6 +27,9 @@ export default function FeaturedWork() {
 
   return (
     <section className="featured-work-section" id="work">
+      {/* Ambient Depth Background Aura */}
+      <div className="section-ambient-halo" aria-hidden="true" />
+
       <div className="container">
         <div className="featured-work-top">
           <SectionHeader
@@ -34,8 +38,8 @@ export default function FeaturedWork() {
             subtitle="Explore dedicated software products, developer utilities, and platform primitives built with end-to-end craftsmanship."
           />
 
-          {/* Filter Pills with Counts */}
-          <div className="category-filter-bar" role="tablist" aria-label="Filter products by category">
+          {/* Filter Pills with Counts and Glass Styling */}
+          <div className="category-filter-bar glass-filter-bar" role="tablist" aria-label="Filter products by category">
             {projectCategories.map((cat) => {
               const count = getCategoryCount(cat.id);
               const isActive = activeCategory === cat.id;
@@ -45,7 +49,7 @@ export default function FeaturedWork() {
                   key={cat.id}
                   role="tab"
                   aria-selected={isActive}
-                  className={`filter-pill ${isActive ? 'pill-active' : ''}`}
+                  className={`filter-pill btn-tactile ${isActive ? 'pill-active' : ''}`}
                   onClick={() => setActiveCategory(cat.id)}
                 >
                   <span>{cat.label}</span>
@@ -56,18 +60,30 @@ export default function FeaturedWork() {
           </div>
         </div>
 
-        {/* Project Cards Grid */}
-        <div className="projects-grid">
-          {filteredProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-            />
-          ))}
+        {/* Project Cards Grid with Interactive Focus Field */}
+        <div
+          className="projects-grid showcase-focus-field"
+          onMouseLeave={() => setHoveredProjectId(null)}
+        >
+          {filteredProjects.map((project) => {
+            const isFocused = hoveredProjectId === project.id;
+            const isReceded = hoveredProjectId !== null && hoveredProjectId !== project.id;
+
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                isFocused={isFocused}
+                isReceded={isReceded}
+                onHoverStart={(id) => setHoveredProjectId(id)}
+                onHoverEnd={() => setHoveredProjectId(null)}
+              />
+            );
+          })}
         </div>
 
-        {/* Showcase Bottom Banner */}
-        <div className="showcase-bottom-banner">
+        {/* Showcase Bottom Banner with Physical Glass Panel */}
+        <div className="showcase-bottom-banner glass-panel">
           <div className="banner-icon-col">
             <Box size={22} className="text-cyan" />
           </div>
@@ -78,7 +94,10 @@ export default function FeaturedWork() {
             </p>
           </div>
           <div className="banner-action-col">
-            <span className="badge badge-cyan mono">{projectsData.length} Software Builds Active</span>
+            <span className="badge badge-cyan mono glass-panel-pill">
+              <span className="status-dot"></span>
+              {projectsData.length} Software Builds Active
+            </span>
           </div>
         </div>
       </div>

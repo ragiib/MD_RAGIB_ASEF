@@ -19,7 +19,8 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Info
+  Info,
+  Maximize2
 } from 'lucide-react';
 import { GithubIcon } from '../components/BrandIcons';
 import ProjectVisual from '../components/ProjectVisual';
@@ -32,11 +33,14 @@ export default function ProjectDetailPage({ onOpenContact }) {
 
   const [activeScreenshotIdx, setActiveScreenshotIdx] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
+  // Signature Mode Toggle: 'runtime' UI vs 'architecture' schema
+  const [visualMode, setVisualMode] = useState('runtime');
 
   // Scroll to top on slug change & dynamic document title
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setActiveScreenshotIdx(0);
+    setVisualMode('runtime');
 
     if (project) {
       document.title = `${project.name} — MD RAGIB ASEF`;
@@ -52,11 +56,11 @@ export default function ProjectDetailPage({ onOpenContact }) {
   if (!project) {
     return (
       <div className="project-not-found-wrap container">
-        <div className="not-found-card">
+        <div className="not-found-card glass-panel">
           <span className="badge badge-amber mono">404 // NOT FOUND</span>
           <h2>Product Not Found</h2>
           <p>The product identifier &ldquo;{slug}&rdquo; does not match any current pipeline software.</p>
-          <Link to="/" className="btn btn-primary">
+          <Link to="/" className="btn btn-primary btn-tactile">
             <ArrowLeft size={16} />
             <span>Back to All Work</span>
           </Link>
@@ -81,7 +85,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
       return (
         <a
           href={project.downloadUrl || '#'}
-          className="btn btn-primary btn-action-hero"
+          className="btn btn-primary btn-action-hero btn-tactile"
           onClick={(e) => {
             if (project.downloadUrl === '#') {
               e.preventDefault();
@@ -99,7 +103,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
       return (
         <a
           href={project.purchaseUrl || '#'}
-          className="btn btn-primary btn-action-hero"
+          className="btn btn-primary btn-action-hero btn-tactile"
           onClick={(e) => {
             if (project.purchaseUrl === '#') {
               e.preventDefault();
@@ -117,7 +121,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
     return (
       <a
         href={project.downloadUrl || '#'}
-        className="btn btn-primary btn-action-hero"
+        className="btn btn-primary btn-action-hero btn-tactile"
         onClick={(e) => {
           if (!project.downloadUrl || project.downloadUrl === '#') {
             e.preventDefault();
@@ -146,10 +150,10 @@ export default function ProjectDetailPage({ onOpenContact }) {
 
   return (
     <article className="project-detail-page">
-      {/* 1. Header Navigation Strip */}
-      <div className="project-nav-strip">
+      {/* 1. Header Navigation Strip with Glass Finish */}
+      <div className="project-nav-strip glass-panel-strip">
         <div className="container project-nav-strip-inner">
-          <Link to="/" className="back-link">
+          <Link to="/" className="back-link btn-tactile">
             <ArrowLeft size={16} />
             <span>Back to All Products</span>
           </Link>
@@ -157,7 +161,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
           <div className="project-strip-actions">
             <button
               type="button"
-              className="strip-share-btn"
+              className="strip-share-btn btn-tactile mono"
               onClick={handleShare}
               title="Copy share link"
             >
@@ -200,7 +204,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
               {/* Platform indicators */}
               {project.platforms && (
                 <div className="product-platforms-row">
-                  <span className="platforms-label mono">PLATFORMS:</span>
+                  <span className="platforms-label mono">TARGET PLATFORMS:</span>
                   <div className="platforms-badges">
                     {project.platforms.map((plat) => (
                       <span key={plat} className="platform-tag mono">
@@ -220,7 +224,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-secondary btn-action-sub"
+                    className="btn btn-secondary btn-action-sub btn-tactile"
                   >
                     <GithubIcon size={17} />
                     <span>View Repository</span>
@@ -229,30 +233,80 @@ export default function ProjectDetailPage({ onOpenContact }) {
 
                 <button
                   type="button"
-                  className="btn btn-ghost"
+                  className="btn btn-ghost btn-tactile"
                   onClick={onOpenContact}
                 >
                   <span>Inquire / Feedback</span>
                 </button>
               </div>
 
-              {/* Quick Spec Metrics */}
+              {/* Quick Spec Metrics with Glassmorphism */}
               {project.stats && (
-                <div className="product-hero-specs">
+                <div className="product-hero-specs glass-panel">
                   {project.stats.map((s, i) => (
                     <div key={i} className="hero-spec-item">
                       <span className="spec-label mono">{s.label}</span>
-                      <span className="spec-val mono">{s.value}</span>
+                      <span className="spec-val mono text-primary">{s.value}</span>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Product Hero Visual */}
+            {/* Product Hero Visual with Interactive Architecture Transition */}
             <div className="product-hero-visual-col">
-              <div className="product-main-visual-frame">
-                <ProjectVisual type={project.visualType} title={project.name} />
+              <div className="visual-mode-bar mono">
+                <span className="mode-bar-label">INSPECTION MODE:</span>
+                <div className="mode-toggle-group">
+                  <button
+                    type="button"
+                    className={`mode-btn ${visualMode === 'runtime' ? 'mode-active' : ''}`}
+                    onClick={() => setVisualMode('runtime')}
+                  >
+                    01 // Runtime UI
+                  </button>
+                  <button
+                    type="button"
+                    className={`mode-btn ${visualMode === 'architecture' ? 'mode-active' : ''}`}
+                    onClick={() => setVisualMode('architecture')}
+                  >
+                    02 // Architecture Schema
+                  </button>
+                </div>
+              </div>
+
+              <div className="product-main-visual-frame glass-panel">
+                {visualMode === 'runtime' ? (
+                  <ProjectVisual type={project.visualType} title={project.name} />
+                ) : (
+                  <div className="visual-architecture-schema mono">
+                    <div className="visual-top-bar">
+                      <div className="visual-window-dots">
+                        <span className="dot red" />
+                        <span className="dot yellow" />
+                        <span className="dot green" />
+                      </div>
+                      <span className="visual-window-title mono">architecture://spec/{project.slug}.schema</span>
+                      <span className="badge badge-cyan visual-status-mini">BLUEPRINT</span>
+                    </div>
+                    <div className="schema-visual-body">
+                      <div className="schema-layer layer-entry">
+                        <span className="layer-tag text-cyan">[EDGE INGRESS]</span>
+                        <span className="layer-text">{project.platforms.join(' · ')} &rarr; Gateway</span>
+                      </div>
+                      <div className="schema-connector">&darr; [Zero-Latency Transport]</div>
+                      <div className="schema-layer layer-core">
+                        <span className="layer-tag text-emerald">[CORE ENGINE]</span>
+                        <span className="layer-text">{project.technologies.slice(0, 3).join(' + ')}</span>
+                      </div>
+                      <div className="schema-connector">&darr; [State Verification &amp; WAL]</div>
+                      <div className="schema-layer layer-storage">
+                        <span className="layer-tag text-amber">[PERSISTENCE PRIMITIVE]</span>
+                        <span className="layer-text">Local-First Storage · Synchronized Checkpoints</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -262,9 +316,12 @@ export default function ProjectDetailPage({ onOpenContact }) {
       {/* 3. Product Overview: What It Is, Problem Solved, Who It's For */}
       <section className="product-overview-section">
         <div className="container">
-          <div className="overview-container-card">
+          <div className="overview-container-card glass-panel">
             <div className="overview-header-row">
-              <span className="badge badge-cyan mono">PRODUCT SPECIFICATION</span>
+              <span className="badge badge-cyan mono glass-panel-pill">
+                <span className="status-dot"></span>
+                PRODUCT SPECIFICATION
+              </span>
               <span className="mono text-muted" style={{ fontSize: '0.8rem' }}>ARCHITECTURAL BRIEF</span>
             </div>
 
@@ -275,7 +332,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
 
             {project.overview && (
               <div className="overview-pillars-grid">
-                <div className="overview-pillar-item">
+                <div className="overview-pillar-item glass-panel">
                   <div className="pillar-label-row">
                     <Box size={16} className="text-cyan" />
                     <span className="pillar-label mono">WHAT IT IS</span>
@@ -283,7 +340,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                   <p className="pillar-text">{project.overview.whatItIs}</p>
                 </div>
 
-                <div className="overview-pillar-item">
+                <div className="overview-pillar-item glass-panel">
                   <div className="pillar-label-row">
                     <Zap size={16} className="text-amber" />
                     <span className="pillar-label mono">PROBLEM SOLVED</span>
@@ -291,7 +348,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                   <p className="pillar-text">{project.overview.problemSolved}</p>
                 </div>
 
-                <div className="overview-pillar-item">
+                <div className="overview-pillar-item glass-panel">
                   <div className="pillar-label-row">
                     <Monitor size={16} className="text-emerald" />
                     <span className="pillar-label mono">TARGET AUDIENCE</span>
@@ -309,7 +366,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
         <section className="product-features-section">
           <div className="container">
             <div className="section-header">
-              <span className="badge badge-indigo">
+              <span className="badge badge-indigo glass-panel-pill">
                 <span className="status-dot"></span>
                 CAPABILITIES &amp; HIGHLIGHTS
               </span>
@@ -321,10 +378,10 @@ export default function ProjectDetailPage({ onOpenContact }) {
 
             <div className="product-features-grid">
               {project.features.map((feat, idx) => (
-                <div key={idx} className="product-feature-card">
+                <div key={idx} className="product-feature-card glass-panel btn-tactile">
                   <div className="feature-top-row">
                     <span className="feature-number mono">0{idx + 1}</span>
-                    {feat.badge && <span className="badge badge-cyan mono">{feat.badge}</span>}
+                    {feat.badge && <span className="badge badge-cyan mono glass-panel-pill">{feat.badge}</span>}
                   </div>
                   <h3 className="feature-title">{feat.title}</h3>
                   <p className="feature-desc">{feat.description}</p>
@@ -340,14 +397,17 @@ export default function ProjectDetailPage({ onOpenContact }) {
         <section className="product-gallery-section">
           <div className="container">
             <div className="section-header">
-              <span className="badge badge-cyan mono">VISUAL SHOWCASE</span>
+              <span className="badge badge-cyan mono glass-panel-pill">
+                <span className="status-dot"></span>
+                VISUAL SHOWCASE
+              </span>
               <h2 className="section-title">Interface &amp; telemetry views.</h2>
               <p className="section-subtitle">
                 Inspect real runtime workflows, interactive dashboards, and developer configurations.
               </p>
             </div>
 
-            <div className="gallery-container">
+            <div className="gallery-container glass-panel">
               {/* Active Gallery Display */}
               <div className="gallery-main-viewport">
                 <ProjectVisual
@@ -365,7 +425,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                     key={shot.id}
                     role="tab"
                     aria-selected={activeScreenshotIdx === idx}
-                    className={`gallery-thumb-btn ${activeScreenshotIdx === idx ? 'thumb-active' : ''}`}
+                    className={`gallery-thumb-btn btn-tactile ${activeScreenshotIdx === idx ? 'thumb-active' : ''}`}
                     onClick={() => setActiveScreenshotIdx(idx)}
                   >
                     <span className="thumb-idx mono">VIEW 0{idx + 1}</span>
@@ -378,15 +438,15 @@ export default function ProjectDetailPage({ onOpenContact }) {
         </section>
       )}
 
-      {/* 6. Recruiter & Technical Architecture Layer */}
+      {/* 6. Recruiter & Technical Architecture Layer with Glassmorphism */}
       {project.recruiter && (
         <section className="product-recruiter-section">
           <div className="container">
-            <div className="recruiter-card">
+            <div className="recruiter-card glass-panel">
               <div className="recruiter-card-header">
                 <div className="recruiter-tag-group">
-                  <span className="badge badge-emerald mono">TECHNICAL BREAKDOWN</span>
-                  <span className="badge badge-cyan mono">RECRUITER &amp; ARCHITECTURE LAYER</span>
+                  <span className="badge badge-emerald mono glass-panel-pill">TECHNICAL BREAKDOWN</span>
+                  <span className="badge badge-cyan mono glass-panel-pill">RECRUITER &amp; ARCHITECTURE LAYER</span>
                 </div>
                 <span className="mono text-muted" style={{ fontSize: '0.8rem' }}>
                   VERIFIED IMPLEMENTATION
@@ -425,7 +485,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                     <span className="recruiter-label mono">SYSTEM ARCHITECTURE</span>
                     <div className="arch-layers-stack">
                       {project.recruiter.architecture.map((arch, i) => (
-                        <div key={i} className="arch-layer-item">
+                        <div key={i} className="arch-layer-item glass-panel">
                           <span className="arch-layer-name mono">{arch.layer}</span>
                           <span className="arch-layer-detail">{arch.detail}</span>
                         </div>
@@ -434,7 +494,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                   </div>
 
                   {project.recruiter.outcomes && (
-                    <div className="recruiter-outcome-block">
+                    <div className="recruiter-outcome-block glass-panel">
                       <span className="recruiter-label mono">OUTCOME &amp; RELIABILITY</span>
                       <p className="recruiter-outcome-text">{project.recruiter.outcomes}</p>
                     </div>
@@ -449,7 +509,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
                 </span>
                 <div className="tech-pills-row">
                   {project.technologies.map((t) => (
-                    <span key={t} className="tech-tag mono">
+                    <span key={t} className="tech-tag mono glass-panel-pill">
                       {t}
                     </span>
                   ))}
@@ -465,7 +525,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
         <div className="container">
           <div className="adjacent-nav-grid">
             {prev && (
-              <Link to={`/project/${prev.slug}`} className="adjacent-card adjacent-prev">
+              <Link to={`/project/${prev.slug}`} className="adjacent-card adjacent-prev glass-panel btn-tactile">
                 <span className="adjacent-direction mono">
                   <ChevronLeft size={16} />
                   <span>PREVIOUS PRODUCT</span>
@@ -476,7 +536,7 @@ export default function ProjectDetailPage({ onOpenContact }) {
             )}
 
             {next && (
-              <Link to={`/project/${next.slug}`} className="adjacent-card adjacent-next">
+              <Link to={`/project/${next.slug}`} className="adjacent-card adjacent-next glass-panel btn-tactile">
                 <span className="adjacent-direction mono">
                   <span>NEXT PRODUCT</span>
                   <ChevronRight size={16} />

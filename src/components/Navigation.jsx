@@ -1,27 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, Menu, X, ArrowLeft, Layers } from 'lucide-react';
+import { ArrowUpRight, Menu, X, ArrowLeft, RotateCcw } from 'lucide-react';
+import { useOpening, STAGES } from '../context/OpeningContext';
+
+const sectionLabels = {
+  hero: '01 // OVERVIEW',
+  work: '02 // SHOWCASE',
+  philosophy: '03 // PRINCIPLES',
+  about: '04 // DOSSIER',
+  future: '05 // ROADMAP'
+};
 
 export default function Navigation({ onOpenContact }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const location = useLocation();
   const navigate = useNavigate();
+  const { stage, isOpeningActive, replayOpening } = useOpening();
 
   const isProjectPage = location.pathname.startsWith('/project/');
+  const isNavVisible = isProjectPage || stage >= STAGES.EXPANSION;
 
+  // Scroll detection & section observation
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 24) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Track active visible section when on homepage
+    if (!isProjectPage) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+              setActiveSection(entry.target.id);
+            }
+          });
+        },
+        { threshold: [0.3, 0.6] }
+      );
+
+      const sectionIds = ['hero', 'work', 'philosophy', 'about', 'future'];
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        observer.disconnect();
+      };
+    }
+
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isProjectPage]);
 
   const closeMobile = () => setMobileMenuOpen(false);
 
@@ -44,7 +79,11 @@ export default function Navigation({ onOpenContact }) {
   };
 
   return (
-    <header className={`nav-header ${scrolled ? 'nav-scrolled' : ''}`}>
+    <header
+      className={`nav-header glass-header ${scrolled ? 'nav-scrolled' : ''} ${
+        isNavVisible ? 'nav-constructed-in' : 'nav-pre-construction'
+      }`}
+    >
       <div className="container nav-container">
         {/* Brand identity */}
         <Link to="/" className="nav-brand" onClick={closeMobile}>
@@ -53,36 +92,44 @@ export default function Navigation({ onOpenContact }) {
           </div>
           <div className="nav-brand-text">
             <span className="brand-name">MD RAGIB ASEF</span>
-            <span className="brand-role">Founder · Product Builder</span>
+            <span className="brand-role mono">Founder · Product Builder</span>
           </div>
         </Link>
+
+        {/* Dynamic Context Status Instrument */}
+        <div className="nav-context-instrument mono" aria-live="polite">
+          <span className="context-indicator-dot"></span>
+          <span className="context-text">
+            {isProjectPage ? 'SPEC // DEEP DIVE' : sectionLabels[activeSection] || '01 // OVERVIEW'}
+          </span>
+        </div>
 
         {/* Desktop Navigation Links */}
         <nav className="nav-desktop-links" aria-label="Main Navigation">
           <a
             href="/#work"
-            className={`nav-link ${isProjectPage ? 'nav-link-highlight' : ''}`}
+            className={`nav-link ${activeSection === 'work' && !isProjectPage ? 'nav-link-active' : ''} ${isProjectPage ? 'nav-link-highlight' : ''}`}
             onClick={(e) => handleNavAnchor(e, 'work')}
           >
             Featured Work
           </a>
           <a
             href="/#philosophy"
-            className="nav-link"
+            className={`nav-link ${activeSection === 'philosophy' && !isProjectPage ? 'nav-link-active' : ''}`}
             onClick={(e) => handleNavAnchor(e, 'philosophy')}
           >
             Philosophy
           </a>
           <a
             href="/#about"
-            className="nav-link"
+            className={`nav-link ${activeSection === 'about' && !isProjectPage ? 'nav-link-active' : ''}`}
             onClick={(e) => handleNavAnchor(e, 'about')}
           >
             About
           </a>
           <a
             href="/#future"
-            className="nav-link"
+            className={`nav-link ${activeSection === 'future' && !isProjectPage ? 'nav-link-active' : ''}`}
             onClick={(e) => handleNavAnchor(e, 'future')}
           >
             Roadmap
@@ -92,7 +139,7 @@ export default function Navigation({ onOpenContact }) {
         {/* Action Button */}
         <div className="nav-actions">
           {isProjectPage && (
-            <Link to="/" className="btn btn-ghost nav-back-home-btn">
+            <Link to="/" className="btn btn-ghost nav-back-home-btn btn-tactile">
               <ArrowLeft size={14} />
               <span>All Products</span>
             </Link>
@@ -100,7 +147,7 @@ export default function Navigation({ onOpenContact }) {
 
           <button 
             type="button" 
-            className="btn btn-secondary nav-cta-btn"
+            className="btn btn-secondary nav-cta-btn btn-tactile"
             onClick={onOpenContact}
           >
             <span>Get in Touch</span>
@@ -110,7 +157,7 @@ export default function Navigation({ onOpenContact }) {
           {/* Mobile Hamburger Toggle */}
           <button
             type="button"
-            className="nav-mobile-toggle"
+            className="nav-mobile-toggle btn-tactile"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             aria-expanded={mobileMenuOpen}
@@ -120,9 +167,9 @@ export default function Navigation({ onOpenContact }) {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu with Physical Glass Finish */}
       {mobileMenuOpen && (
-        <div className="nav-mobile-drawer">
+        <div className="nav-mobile-drawer glass-drawer">
           <div className="nav-mobile-content">
             <div className="nav-mobile-links">
               <a
@@ -130,7 +177,7 @@ export default function Navigation({ onOpenContact }) {
                 className="nav-mobile-link"
                 onClick={(e) => handleNavAnchor(e, 'work')}
               >
-                <span>01</span>
+                <span className="mono">01</span>
                 <span>Featured Work</span>
               </a>
               <a
@@ -138,7 +185,7 @@ export default function Navigation({ onOpenContact }) {
                 className="nav-mobile-link"
                 onClick={(e) => handleNavAnchor(e, 'philosophy')}
               >
-                <span>02</span>
+                <span className="mono">02</span>
                 <span>Philosophy</span>
               </a>
               <a
@@ -146,7 +193,7 @@ export default function Navigation({ onOpenContact }) {
                 className="nav-mobile-link"
                 onClick={(e) => handleNavAnchor(e, 'about')}
               >
-                <span>03</span>
+                <span className="mono">03</span>
                 <span>About MD Ragib Asef</span>
               </a>
               <a
@@ -154,7 +201,7 @@ export default function Navigation({ onOpenContact }) {
                 className="nav-mobile-link"
                 onClick={(e) => handleNavAnchor(e, 'future')}
               >
-                <span>04</span>
+                <span className="mono">04</span>
                 <span>Roadmap &amp; Future</span>
               </a>
             </div>
@@ -162,7 +209,7 @@ export default function Navigation({ onOpenContact }) {
             <div className="nav-mobile-footer">
               <button
                 type="button"
-                className="btn btn-primary btn-full"
+                className="btn btn-primary btn-full btn-tactile"
                 onClick={() => {
                   closeMobile();
                   onOpenContact();
@@ -171,9 +218,24 @@ export default function Navigation({ onOpenContact }) {
                 <span>Get in Touch</span>
                 <ArrowUpRight size={16} />
               </button>
-              <div className="nav-mobile-status">
+
+              <button
+                type="button"
+                className="btn btn-ghost btn-full mono btn-tactile"
+                onClick={() => {
+                  closeMobile();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  replayOpening();
+                }}
+                style={{ fontSize: '0.8rem', color: 'var(--accent-cyan)' }}
+              >
+                <RotateCcw size={14} />
+                <span>Replay Opening Experience</span>
+              </button>
+
+              <div className="nav-mobile-status mono">
                 <span className="status-dot"></span>
-                <span>Building software &amp; tools</span>
+                <span>Systems Active · MD RAGIB ASEF</span>
               </div>
             </div>
           </div>

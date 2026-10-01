@@ -2882,3 +2882,938 @@ section {
   color: #ffffff;
 }
 
+/* ==========================================================================
+   VISUAL REFINEMENT: TYPOGRAPHY + ADVANCED GLASSMORPHISM + MOTION
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Distinctive Typography Treatments
+   -------------------------------------------------------------------------- */
+.brand-name {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+}
+
+.logo-mra {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.05em;
+  color: #ffffff;
+}
+
+/* Signature MD RAGIB ASEF Hero Typography */
+.signature-name {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7.2vw, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.hero-name-mark {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.2vw, 1.45rem);
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 24px -4px rgba(56, 189, 248, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.hero-name-primary {
+  display: inline-block;
+  background: radial-gradient(circle 480px at var(--hero-light-x, 50%) var(--hero-light-y, 50%), #ffffff 0%, #f1f5f9 35%, #94a3b8 70%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  transition: background-position 200ms ease;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+.project-card-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.product-hero-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.overview-section-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.pillar-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.future-pillar-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.about-name {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.footer-name {
+  font-family: var(--font-brand);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* --------------------------------------------------------------------------
+   2. Physical Glassmorphism Material System
+   -------------------------------------------------------------------------- */
+.glass-panel {
+  background: var(--glass-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-bevel), var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Specular top bevel reflection */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.28) 35%, rgba(56, 189, 248, 0.45) 50%, rgba(255, 255, 255, 0.28) 65%, transparent 95%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Ambient pointer-light refraction inside glass */
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 500px at var(--cursor-x, 50vw) var(--cursor-y, 35vh), rgba(255, 255, 255, 0.025), transparent 75%);
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.glass-panel-pill {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-card-material {
+  background: var(--glass-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-bevel), var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform 250ms var(--ease-snappy), border-color 250ms ease, box-shadow 250ms ease, opacity 300ms ease, filter 300ms ease;
+}
+
+.card-glass-specular {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 380px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.07), transparent 75%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 250ms ease;
+  z-index: 1;
+}
+
+.project-card:hover .card-glass-specular {
+  opacity: 1;
+}
+
+.glass-header {
+  background: rgba(7, 9, 14, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-drawer {
+  background: rgba(9, 12, 18, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-filter-bar {
+  background: rgba(14, 18, 26, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.5rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-strip {
+  background: rgba(11, 15, 23, 0.6);
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   3. Signature Interaction: Focus Field in Featured Work
+   -------------------------------------------------------------------------- */
+.showcase-focus-field {
+  transition: opacity 300ms ease;
+}
+
+.card-field-focused {
+  border-color: rgba(56, 189, 248, 0.55) !important;
+  box-shadow: var(--glass-bevel), 0 28px 64px -12px rgba(0, 0, 0, 0.8), 0 0 45px -5px rgba(56, 189, 248, 0.25) !important;
+  z-index: 5;
+}
+
+.card-field-receded {
+  opacity: 0.52 !important;
+  filter: saturate(0.85);
+  transform: scale(0.985) translateY(2px) !important;
+  transition: all 350ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Internal Parallax Depth Layers (Desktop fine pointer only) */
+@media (hover: hover) and (pointer: fine) {
+  .product-showcase-card {
+    transform-style: preserve-3d;
+  }
+  .layer-parallax-depth {
+    transform: translateZ(24px);
+    transition: transform 250ms var(--ease-snappy);
+  }
+  .layer-parallax-mid {
+    transform: translateZ(14px);
+    transition: transform 250ms var(--ease-snappy);
+  }
+  .layer-parallax-high {
+    transform: translateZ(28px);
+    transition: transform 250ms var(--ease-snappy);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Context Instrument in Navigation
+   -------------------------------------------------------------------------- */
+.nav-context-instrument {
+  display: none;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 980px) {
+  .nav-context-instrument {
+    display: inline-flex;
+  }
+}
+
+.context-indicator-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 6px var(--accent-cyan);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+.nav-link-active {
+  color: #ffffff !important;
+}
+.nav-link-active::after {
+  width: 100% !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Signature Interaction: Inspection Mode & Architecture Transition
+   -------------------------------------------------------------------------- */
+.visual-mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-md);
+  background: rgba(14, 18, 26, 0.6);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mode-bar-label {
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.mode-toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mode-btn {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--trans-fast);
+  font-size: 0.75rem;
+}
+
+.mode-btn:hover {
+  color: #ffffff;
+}
+
+.mode-btn.mode-active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.visual-architecture-schema {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #080a0f;
+  border-radius: inherit;
+  animation: fadeIn 200ms ease-out;
+}
+
+.schema-visual-body {
+  flex: 1;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.schema-layer {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.85rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.layer-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.layer-text {
+  color: var(--text-primary);
+  font-size: 0.825rem;
+}
+
+.schema-connector {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   6. Tactile Micro-Interactions & Ambient Atmosphere
+   -------------------------------------------------------------------------- */
+.btn-tactile {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 160ms var(--ease-snappy), box-shadow 160ms var(--ease-snappy), background 160ms ease, border-color 160ms ease;
+}
+
+.btn-tactile:active {
+  transform: scale(0.97) translateY(1px);
+}
+
+.btn-tactile:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.section-ambient-halo {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 750px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.045), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-light-cone {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse 600px 350px at 50% 30%, rgba(56, 189, 248, 0.05), transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-badge-text {
+  font-weight: 500;
+}
+
+.badge-pipe {
+  color: var(--text-dim);
+  font-size: 0.7rem;
+}
+
+.badge-tag {
+  color: var(--accent-cyan);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   CINEMATIC OPENING EXPERIENCE — SYSTEM AWAKENING & REAL-TIME CONSTRUCTION
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Master Cinematic Stage Container & Skip Controller
+   -------------------------------------------------------------------------- */
+.cinematic-stage-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  overflow: hidden;
+  transition: opacity 800ms var(--ease-snappy);
+}
+
+.cinematic-skip-btn {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.5rem;
+  z-index: 1001;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: rgba(14, 19, 29, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 600ms 1.5s both;
+}
+
+.cinematic-skip-btn:hover {
+  color: #ffffff;
+  border-color: var(--accent-cyan);
+}
+
+.skip-key {
+  color: var(--accent-cyan);
+  font-size: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Stage 1 & 2: Architectural Hairline Grid & Datum Axes
+   -------------------------------------------------------------------------- */
+.cinematic-horizon-axis {
+  position: fixed;
+  top: 48%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.35) 25%, rgba(255, 255, 255, 0.9) 50%, rgba(56, 189, 248, 0.35) 75%, transparent 100%);
+  transform: translateY(-50%) scaleX(0);
+  opacity: 0;
+  transition: transform 1400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms ease;
+  z-index: 10;
+}
+
+.stage-1 .cinematic-horizon-axis,
+.stage-2 .cinematic-horizon-axis,
+.stage-3 .cinematic-horizon-axis,
+.stage-4 .cinematic-horizon-axis {
+  transform: translateY(-50%) scaleX(1);
+  opacity: 0.8;
+}
+
+.stage-5 .cinematic-horizon-axis {
+  transform: translateY(-50%) scaleX(1.4);
+  opacity: 0;
+  transition: all 1000ms ease;
+}
+
+.cinematic-vertical-axis {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(56, 189, 248, 0.25) 30%, rgba(255, 255, 255, 0.7) 50%, rgba(56, 189, 248, 0.25) 70%, transparent 100%);
+  transform: translateX(-50%) scaleY(0);
+  opacity: 0;
+  transition: transform 1400ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms ease;
+  z-index: 10;
+}
+
+.stage-2 .cinematic-vertical-axis,
+.stage-3 .cinematic-vertical-axis,
+.stage-4 .cinematic-vertical-axis {
+  transform: translateX(-50%) scaleY(1);
+  opacity: 0.65;
+}
+
+.stage-5 .cinematic-vertical-axis {
+  transform: translateX(-50%) scaleY(1.3);
+  opacity: 0;
+  transition: all 1000ms ease;
+}
+
+/* Calibration HUD Overlays */
+.cinematic-calibration-hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.hud-corner {
+  position: absolute;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 800ms var(--ease-snappy);
+}
+
+.hud-corner.top-left { top: 2rem; left: 2.5rem; }
+.hud-corner.top-right { top: 2rem; right: 9rem; text-align: right; }
+.hud-corner.bottom-left { bottom: 2rem; left: 2.5rem; }
+.hud-corner.bottom-right { bottom: 2rem; right: 2.5rem; text-align: right; }
+
+.hud-tag {
+  color: var(--text-muted);
+}
+.hud-metric {
+  color: var(--text-secondary);
+}
+
+.stage-1 .hud-corner,
+.stage-2 .hud-corner,
+.stage-3 .hud-corner,
+.stage-4 .hud-corner {
+  opacity: 0.85;
+  transform: translateY(0);
+}
+
+.stage-5 .hud-corner {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* --------------------------------------------------------------------------
+   3. Stage 3: Spatial Glass Construction Shards
+   -------------------------------------------------------------------------- */
+.glass-construction-field {
+  position: fixed;
+  inset: 0;
+  perspective: 1200px;
+  pointer-events: none;
+  z-index: 8;
+}
+
+.construction-shard {
+  position: absolute;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(13, 18, 28, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 24px 60px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transition: all 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shard-specular-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6) 50%, transparent);
+}
+
+.shard-inner-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Left & Right Flanking Glass Shards */
+.shard-left {
+  width: 260px;
+  height: 380px;
+  left: 5%;
+  top: 30%;
+  border-radius: var(--radius-xl);
+  transform: rotateY(-25deg) translateZ(-80px) translateX(-60px);
+}
+
+.shard-right {
+  width: 260px;
+  height: 380px;
+  right: 5%;
+  top: 30%;
+  border-radius: var(--radius-xl);
+  transform: rotateY(25deg) translateZ(-80px) translateX(60px);
+}
+
+/* Center Lens (Precursor to the live navigation) */
+.shard-center-lens {
+  width: min(840px, 88vw);
+  height: 64px;
+  top: 14%;
+  left: 50%;
+  border-radius: var(--radius-pill);
+  transform: translateX(-50%) translateY(-30px) scale(0.92);
+}
+
+.stage-2 .shard-left,
+.stage-3 .shard-left,
+.stage-4 .shard-left {
+  opacity: 0.9;
+  transform: rotateY(-12deg) translateZ(0) translateX(0);
+}
+
+.stage-2 .shard-right,
+.stage-3 .shard-right,
+.stage-4 .shard-right {
+  opacity: 0.9;
+  transform: rotateY(12deg) translateZ(0) translateX(0);
+}
+
+.stage-2 .shard-center-lens,
+.stage-3 .shard-center-lens,
+.stage-4 .shard-center-lens {
+  opacity: 0.9;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Seamless transformation into live homepage during Stage 5 */
+.stage-5 .shard-left {
+  opacity: 0;
+  transform: rotateY(-40deg) translateX(-120px) scale(0.9);
+}
+
+.stage-5 .shard-right {
+  opacity: 0;
+  transform: rotateY(40deg) translateX(120px) scale(0.9);
+}
+
+.stage-5 .shard-center-lens {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-60px) scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   4. Stage 4: Center Laser Framing Aperture
+   -------------------------------------------------------------------------- */
+.cinematic-center-aperture {
+  position: fixed;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(780px, 92vw);
+  height: 180px;
+  pointer-events: none;
+  z-index: 11;
+}
+
+.aperture-bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(56, 189, 248, 0.45);
+  opacity: 0;
+  transition: all 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aperture-bracket.top-left { top: 0; left: 0; border-top: 1.5px solid; border-left: 1.5px solid; transform: translate(-10px, -10px); }
+.aperture-bracket.top-right { top: 0; right: 0; border-top: 1.5px solid; border-right: 1.5px solid; transform: translate(10px, -10px); }
+.aperture-bracket.bottom-left { bottom: 0; left: 0; border-bottom: 1.5px solid; border-left: 1.5px solid; transform: translate(-10px, 10px); }
+.aperture-bracket.bottom-right { bottom: 0; right: 0; border-bottom: 1.5px solid; border-right: 1.5px solid; transform: translate(10px, 10px); }
+
+.stage-3 .aperture-bracket,
+.stage-4 .aperture-bracket {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.stage-5 .aperture-bracket {
+  opacity: 0;
+  transform: scale(1.2);
+}
+
+/* --------------------------------------------------------------------------
+   5. Hero Choreography: Staged Name, Role, Statement & Actions Reveal
+   -------------------------------------------------------------------------- */
+.hero-cinematic-mode {
+  min-height: 100vh;
+}
+
+.hero-ambient-horizon {
+  position: absolute;
+  top: 48%;
+  left: 0;
+  right: 0;
+  height: 240px;
+  transform: translateY(-50%);
+  background: radial-gradient(ellipse 900px 180px at 50% 50%, rgba(56, 189, 248, 0.06), transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Monogram Laser Clip */
+.mark-laser-clip {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid var(--accent-cyan);
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: opacity 300ms ease;
+}
+
+.name-awakened .mark-laser-clip {
+  opacity: 1;
+  animation: laserClipIn 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes laserClipIn {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+/* Name Reveal Typography (Stage 4) */
+.name-dormant {
+  opacity: 0;
+  filter: blur(16px);
+  letter-spacing: 0.22em;
+  transform: scale(0.92);
+}
+
+.name-awakened {
+  animation: nameConstructReveal 1300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes nameConstructReveal {
+  0% {
+    opacity: 0;
+    filter: blur(16px);
+    letter-spacing: 0.22em;
+    transform: scale(0.92);
+  }
+  45% {
+    opacity: 0.85;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    letter-spacing: -0.04em;
+    transform: scale(1);
+  }
+}
+
+/* Identity & Role Reveal (Stage 5) */
+.role-dormant {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(6px);
+}
+
+.role-revealed {
+  animation: slideUpFade 850ms var(--ease-snappy) forwards;
+}
+
+.statement-dormant {
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(6px);
+}
+
+.statement-revealed {
+  animation: slideUpFade 950ms 150ms var(--ease-snappy) forwards;
+}
+
+/* Actions & Telemetry Reveal (Stage 6) */
+.actions-dormant {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.actions-revealed {
+  animation: slideUpFade 850ms 100ms var(--ease-snappy) forwards;
+  pointer-events: auto;
+}
+
+.telemetry-dormant {
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+}
+
+.telemetry-revealed {
+  animation: slideUpFade 950ms 250ms var(--ease-snappy) forwards;
+}
+
+.hero-elem-hidden {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+.hero-elem-revealed {
+  animation: slideDownFade 750ms var(--ease-snappy) forwards;
+}
+
+/* Navigation Gliding In from Construction Lens */
+.nav-pre-construction {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-constructed-in {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 600ms ease;
+}
+
+/* Footer Replay Action Button */
+.footer-replay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.06);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--trans-fast);
+}
+
+.footer-replay-btn:hover {
+  background: rgba(56, 189, 248, 0.14);
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Accessibility & Reduced Motion Guard */
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-stage-wrap {
+    display: none !important;
+  }
+  .name-dormant,
+  .role-dormant,
+  .statement-dormant,
+  .actions-dormant,
+  .telemetry-dormant,
+  .hero-elem-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .nav-pre-construction {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+
+

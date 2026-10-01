@@ -1,16 +1,20 @@
 import React, { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, ArrowRight, Check, Sparkles, ExternalLink, Code2, Monitor, Download, Zap, ShoppingBag } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Download, Zap, ShoppingBag, Terminal, Sparkles } from 'lucide-react';
 import ProjectVisual from './ProjectVisual';
 
-export default function ProjectCard({ project }) {
+export default function ProjectCard({
+  project,
+  isFocused,
+  isReceded,
+  onHoverStart,
+  onHoverEnd
+}) {
   const cardRef = useRef(null);
-  const navigate = useNavigate();
   const [transformStyle, setTransformStyle] = useState('');
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   const handleMouseMove = (e) => {
-    // Only apply 3D tilt on devices that support hover (not pure touch)
     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && cardRef.current) {
       const rect = cardRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -19,10 +23,11 @@ export default function ProjectCard({ project }) {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -3.5;
-      const rotateY = ((x - centerX) / centerX) * 3.5;
+      // Smooth, controlled 3D tilt angles
+      const rotateX = ((y - centerY) / centerY) * -4.5;
+      const rotateY = ((x - centerX) / centerX) * 4.5;
 
-      setTransformStyle(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`);
+      setTransformStyle(`perspective(1200px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-6px)`);
       setMousePos({
         x: Math.round((x / rect.width) * 100),
         y: Math.round((y / rect.height) * 100)
@@ -30,8 +35,13 @@ export default function ProjectCard({ project }) {
     }
   };
 
+  const handleMouseEnter = () => {
+    if (onHoverStart) onHoverStart(project.id);
+  };
+
   const handleMouseLeave = () => {
     setTransformStyle('');
+    if (onHoverEnd) onHoverEnd();
   };
 
   const getPricingBadgeClass = (type) => {
@@ -47,49 +57,42 @@ export default function ProjectCard({ project }) {
     }
   };
 
-  const getCtaIcon = (type) => {
-    switch (type) {
-      case 'free':
-        return <Download size={14} />;
-      case 'paid':
-        return <ShoppingBag size={14} />;
-      default:
-        return <Zap size={14} />;
-    }
-  };
-
   return (
     <article
       ref={cardRef}
-      className="project-card product-showcase-card"
+      className={`project-card product-showcase-card glass-card-material ${
+        isFocused ? 'card-field-focused' : ''
+      } ${isReceded ? 'card-field-receded' : ''}`}
       style={{
         transform: transformStyle,
         '--mouse-x': `${mousePos.x}%`,
         '--mouse-y': `${mousePos.y}%`
       }}
       onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Ambient reactive light sheen */}
+      {/* Physical Glass Specular Bevel & Light Refraction Sheen */}
+      <div className="card-glass-specular" aria-hidden="true" />
       <div className="card-ambient-glow" aria-hidden="true" />
 
-      {/* Visual Software Mockup Section (Clicking opens project page) */}
+      {/* Layer 1: Visual Mockup Viewport with independent Parallax depth (Z: 24px) */}
       <Link
         to={`/project/${project.slug}`}
-        className="project-card-visual"
+        className="project-card-visual layer-parallax-depth"
         aria-label={`View full details for ${project.name}`}
       >
         <ProjectVisual type={project.visualType} title={project.name} />
         <div className="card-visual-overlay">
           <span className="visual-inspect-btn">
-            <span>Explore Product Specification</span>
+            <span>Explore Specification</span>
             <ArrowRight size={15} />
           </span>
         </div>
       </Link>
 
-      {/* Card Content & Metadata */}
-      <div className="project-card-body">
+      {/* Layer 2: Card Content & Metadata (Z: 14px) */}
+      <div className="project-card-body layer-parallax-mid">
         {/* Category & Status Bar */}
         <div className="project-card-meta">
           <span className="project-category mono">{project.category}</span>
@@ -109,7 +112,7 @@ export default function ProjectCard({ project }) {
         {/* Supported Platforms Strip */}
         {project.platforms && (
           <div className="card-platforms-strip">
-            <span className="platforms-mini-label mono">TARGET:</span>
+            <span className="platforms-mini-label mono">PLATFORMS:</span>
             <div className="platforms-pills-wrap">
               {project.platforms.map((plat) => (
                 <span key={plat} className="platform-mini-pill mono">
@@ -141,11 +144,11 @@ export default function ProjectCard({ project }) {
           ))}
         </div>
 
-        {/* Card Footer Interaction */}
-        <div className="project-card-footer">
+        {/* Card Footer Interaction (Z: 28px) */}
+        <div className="project-card-footer layer-parallax-high">
           <Link
             to={`/project/${project.slug}`}
-            className="btn btn-primary btn-card-action"
+            className="btn btn-primary btn-card-action btn-tactile"
             aria-label={`View full product details for ${project.name}`}
           >
             <span>Explore Product</span>

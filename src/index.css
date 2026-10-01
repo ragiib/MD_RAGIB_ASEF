@@ -9,15 +9,29 @@
   --bg-surface: #0e121a;
   --bg-surface-elevated: #141a24;
   --bg-surface-active: #1a2230;
-  --bg-card: rgba(14, 18, 26, 0.7);
-  --bg-card-hover: rgba(20, 26, 36, 0.85);
-  --bg-glass: rgba(10, 13, 20, 0.8);
+  --bg-card: rgba(13, 17, 26, 0.72);
+  --bg-card-hover: rgba(18, 24, 38, 0.85);
+  --bg-glass: rgba(10, 13, 20, 0.82);
+
+  /* Physical Glassmorphism Tokens */
+  --glass-base: rgba(13, 17, 26, 0.72);
+  --glass-elevated: rgba(18, 24, 38, 0.78);
+  --glass-floating: rgba(14, 19, 30, 0.88);
+  --glass-subtle: rgba(255, 255, 255, 0.03);
+  --glass-blur: blur(20px);
+  --glass-blur-heavy: blur(28px);
+  
+  /* Microscopic Physical Bevel & Edge Highlights */
+  --glass-bevel: inset 0 1px 0 0 rgba(255, 255, 255, 0.16), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --glass-bevel-subtle: inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+  --glass-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --glass-shadow-floating: 0 28px 64px -12px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.5);
 
   /* Borders & Dividers */
   --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-light: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --border-accent: rgba(56, 189, 248, 0.35);
+  --border-light: rgba(255, 255, 255, 0.11);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --border-accent: rgba(56, 189, 248, 0.38);
 
   /* Typography Colors */
   --text-primary: #f8fafc;
@@ -33,13 +47,19 @@
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
 
-  /* Typography Fonts */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  /* Refined Typography Hierarchy:
+     1. Brand Wordmark & Monogram: 'Syne' (Sculptural, Architectural, Confident)
+     2. Section Headings & Project Names: 'Space Grotesk' (Technical, Editorial, Distinctive)
+     3. Body Text & Longform Overview: 'Plus Jakarta Sans' (Readable, Ergonomic, Human)
+     4. Code, Metrics, System Telemetry: 'JetBrains Mono' (Precision Monospace)
+  */
+  --font-brand: 'Syne', sans-serif;
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* Spacing & Layout */
-  --container-width: 1200px;
+  --container-width: 1220px;
   --header-height: 72px;
 
   /* Radii */
@@ -52,16 +72,21 @@
 
   /* Shadows & Glows */
   --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
-  --shadow-elevated: 0 20px 48px rgba(0, 0, 0, 0.65);
-  --shadow-cyan-glow: 0 0 35px -5px rgba(56, 189, 248, 0.2);
+  --shadow-card: var(--glass-shadow);
+  --shadow-elevated: var(--glass-shadow-floating);
+  --shadow-cyan-glow: 0 0 35px -5px rgba(56, 189, 248, 0.22);
 
   /* Transitions */
   --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --trans-fast: 150ms var(--ease-snappy);
-  --trans-normal: 250ms var(--ease-snappy);
-  --trans-smooth: 450ms var(--ease-snappy);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --trans-fast: 160ms var(--ease-snappy);
+  --trans-normal: 280ms var(--ease-snappy);
+  --trans-smooth: 500ms var(--ease-out-expo);
+
+  /* Interactive Cursor Proximity Variables (Default Centered) */
+  --cursor-x: 50vw;
+  --cursor-y: 35vh;
 }
 
 /* Base Reset & Core Styles */
@@ -72,7 +97,7 @@
 }
 
 html {
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   line-height: 1.6;
@@ -91,15 +116,16 @@ body {
   color: var(--text-primary);
 }
 
-/* Subtle architectural grid pattern overlay */
+/* Subtle architectural grid pattern overlay with environmental cursor spotlight */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image: 
+    radial-gradient(750px circle at var(--cursor-x, 50vw) var(--cursor-y, 35vh), rgba(56, 189, 248, 0.038), transparent 75%),
     linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 64px 64px;
+  background-size: 100% 100%, 64px 64px, 64px 64px;
   pointer-events: none;
   z-index: 0;
 }
@@ -110,12 +136,12 @@ body::before {
   color: #ffffff;
 }
 
-/* Typography Defaults */
+/* Typography Defaults: Space Grotesk for Headings, Syne for Brand */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   line-height: 1.15;
 }
 
