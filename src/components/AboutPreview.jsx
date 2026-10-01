@@ -1,9 +1,46 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Terminal, User, Code2, Compass, Layers, CheckCircle2, FileText, Target, Flag, Download } from 'lucide-react';
+import { ArrowUpRight, Terminal, User, Code2, Compass, Layers, CheckCircle2, FileText, Target, Flag, Download, Sparkles } from 'lucide-react';
 import SectionHeader from './SectionHeader';
+import { useInteractiveSurface } from '../hooks/useInteractiveSurface';
+
+function CapabilityCard({ icon: Icon, iconColor, title, desc, tag, metadata }) {
+  const cardRef = useInteractiveSurface({
+    mode: 'magnetic-surface',
+    maxDistance: 7,
+    proximityRange: 160
+  });
+
+  return (
+    <div ref={cardRef} className="capability-card magnetic-surface-box">
+      <div className="cap-specular-glow" aria-hidden="true" />
+      <div className="cap-icon-box">
+        <Icon size={20} className={iconColor} />
+      </div>
+      <div className="cap-content">
+        <div className="cap-title-row">
+          <h4 className="cap-title">{title}</h4>
+          {tag && <span className="cap-mini-tag mono">{tag}</span>}
+        </div>
+        <p className="cap-desc">{desc}</p>
+        {metadata && (
+          <div className="cap-metadata-reveal mono">
+            <span className="metadata-dot" />
+            <span>{metadata}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function AboutPreview({ onOpenContact }) {
   const [showFullBio, setShowFullBio] = useState(false);
+
+  const dossierRef = useInteractiveSurface({
+    mode: 'dossier-unfold',
+    maxAngle: 3.5,
+    perspective: 1400
+  });
 
   return (
     <section className="about-section" id="about">
@@ -15,11 +52,13 @@ export default function AboutPreview({ onOpenContact }) {
         />
 
         <div className="about-layout-grid">
-          {/* Left Column: Brand Identity & Biography Dossier */}
-          <div className="about-bio-card">
+          {/* Left Column: Brand Identity & Biography Dossier with Physical Dossier Unfolding */}
+          <div ref={dossierRef} className="about-bio-card dossier-panel-material">
+            <div className="dossier-specular-light" aria-hidden="true" />
+            
             <div className="about-card-badge-row">
               <span className="badge badge-cyan mono">BUILDER DOSSIER</span>
-              <span className="mono text-muted" style={{ fontSize: '0.8rem' }}>PRIMARY IDENTITY</span>
+              <span className="mono text-muted dossier-ref-id" style={{ fontSize: '0.8rem' }}>REF // MRA-2026</span>
             </div>
 
             <div className="about-identity-block">
@@ -32,8 +71,8 @@ export default function AboutPreview({ onOpenContact }) {
                 I build software products that live at the intersection of robust backend mechanics and refined, tactile user experiences.
               </p>
 
-              {/* Professional Biography Box */}
-              <div className="bio-placeholder-box">
+              {/* Professional Biography Box (Slides independently on pointer movement) */}
+              <div className="bio-placeholder-box dossier-sliding-sheet">
                 <div className="bio-placeholder-header">
                   <span className="status-dot"></span>
                   <span className="mono">Professional Biography &amp; Background</span>
@@ -55,7 +94,7 @@ export default function AboutPreview({ onOpenContact }) {
               </div>
 
               {/* Current Focus & Future Goals Strip */}
-              <div className="about-focus-goals-strip">
+              <div className="about-focus-goals-strip dossier-sliding-sheet">
                 <div className="focus-goal-item">
                   <div className="focus-goal-title mono">
                     <Target size={14} className="text-cyan" />
@@ -81,7 +120,7 @@ export default function AboutPreview({ onOpenContact }) {
             <div className="about-actions-row">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-tactile"
                 onClick={() => setShowFullBio(!showFullBio)}
               >
                 <span>{showFullBio ? 'Collapse Dossier' : 'Read Full Background'}</span>
@@ -90,7 +129,7 @@ export default function AboutPreview({ onOpenContact }) {
 
               <button
                 type="button"
-                className="btn btn-ghost"
+                className="btn btn-ghost btn-tactile"
                 onClick={onOpenContact}
               >
                 <FileText size={15} />
@@ -99,46 +138,34 @@ export default function AboutPreview({ onOpenContact }) {
             </div>
           </div>
 
-          {/* Right Column: Capabilities & What I Build */}
+          {/* Right Column: Capabilities & What I Build with Magnetic Responsive Surfaces */}
           <div className="about-capabilities-stack">
-            {/* Capability Box 1 */}
-            <div className="capability-card">
-              <div className="cap-icon-box">
-                <Code2 size={20} className="text-cyan" />
-              </div>
-              <div className="cap-content">
-                <h4 className="cap-title">What I Build: Developer Tools &amp; Web Apps</h4>
-                <p className="cap-desc">
-                  Building decoupled, modern applications with React, TypeScript, Node.js, and edge infrastructure. Prioritizing instant load times, clean state management, and ergonomic component systems.
-                </p>
-              </div>
-            </div>
+            <CapabilityCard
+              icon={Code2}
+              iconColor="text-cyan"
+              title="What I Build: Developer Tools & Web Apps"
+              desc="Building decoupled, modern applications with React, TypeScript, Node.js, and edge infrastructure. Prioritizing instant load times, clean state management, and ergonomic component systems."
+              tag="SYSTEMS"
+              metadata="React 19 · TypeScript · Edge Runtimes · Vite"
+            />
 
-            {/* Capability Box 2 */}
-            <div className="capability-card">
-              <div className="cap-icon-box">
-                <Layers size={20} className="text-indigo" />
-              </div>
-              <div className="cap-content">
-                <h4 className="cap-title">Systems &amp; Architecture Thinking</h4>
-                <p className="cap-desc">
-                  Designing resilient background workers, event-driven pipelines, and relational/key-value data stores capable of predictable scale without unnecessary complexity.
-                </p>
-              </div>
-            </div>
+            <CapabilityCard
+              icon={Layers}
+              iconColor="text-indigo"
+              title="Systems & Architecture Thinking"
+              desc="Designing resilient background workers, event-driven pipelines, and relational/key-value data stores capable of predictable scale without unnecessary complexity."
+              tag="INFRA"
+              metadata="PostgreSQL · Redis Queues · WebSocket Streams"
+            />
 
-            {/* Capability Box 3 */}
-            <div className="capability-card">
-              <div className="cap-icon-box">
-                <Compass size={20} className="text-emerald" />
-              </div>
-              <div className="cap-content">
-                <h4 className="cap-title">Founder Mindset &amp; Autonomy</h4>
-                <p className="cap-desc">
-                  Ruthless prioritization of core user value. Comfortable leading product roadmaps, shaping user interfaces, and shipping self-sustaining digital assets.
-                </p>
-              </div>
-            </div>
+            <CapabilityCard
+              icon={Compass}
+              iconColor="text-emerald"
+              title="Founder Mindset & Autonomy"
+              desc="Ruthless prioritization of core user value. Comfortable leading product roadmaps, shaping user interfaces, and shipping self-sustaining digital assets."
+              tag="LEADERSHIP"
+              metadata="Product Strategy · Rapid Prototyping · Zero to 1"
+            />
           </div>
         </div>
       </div>

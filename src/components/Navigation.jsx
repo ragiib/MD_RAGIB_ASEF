@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, Menu, X, ArrowLeft, RotateCcw } from 'lucide-react';
 import { useOpening, STAGES } from '../context/OpeningContext';
+import { useInteractiveSurface } from '../hooks/useInteractiveSurface';
 
 const sectionLabels = {
   hero: '01 // OVERVIEW',
@@ -18,6 +19,10 @@ export default function Navigation({ onOpenContact }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { stage, isOpeningActive, replayOpening } = useOpening();
+
+  const navGlassRef = useInteractiveSurface({
+    mode: 'glass-illuminate'
+  });
 
   const isProjectPage = location.pathname.startsWith('/project/');
   const isNavVisible = isProjectPage || stage >= STAGES.EXPANSION;
@@ -80,6 +85,7 @@ export default function Navigation({ onOpenContact }) {
 
   return (
     <header
+      ref={navGlassRef}
       className={`nav-header glass-header ${scrolled ? 'nav-scrolled' : ''} ${
         isNavVisible ? 'nav-constructed-in' : 'nav-pre-construction'
       }`}

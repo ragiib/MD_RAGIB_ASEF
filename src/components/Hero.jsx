@@ -2,6 +2,27 @@ import React, { useRef, useState } from 'react';
 import { ArrowDown, ArrowUpRight, Code2, Terminal, Sparkles, User, Box, Shield, Zap } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import { useOpening, STAGES } from '../context/OpeningContext';
+import { useInteractiveSurface } from '../hooks/useInteractiveSurface';
+
+function MagneticHeroButton({ children, className, onClick, ...props }) {
+  const btnRef = useInteractiveSurface({
+    mode: 'magnetic-surface',
+    maxDistance: 6,
+    proximityRange: 120
+  });
+
+  return (
+    <button
+      ref={btnRef}
+      type="button"
+      className={className}
+      onClick={onClick}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function Hero() {
   const heroRef = useRef(null);
@@ -103,23 +124,21 @@ export default function Hero() {
               isUiExpanded ? 'actions-revealed' : 'actions-dormant'
             }`}
           >
-            <button
-              type="button"
+            <MagneticHeroButton
               className="btn btn-primary hero-btn-main btn-tactile"
               onClick={() => scrollTo('work')}
             >
               <span>Explore My Work</span>
               <ArrowDown size={17} className="btn-icon-down" />
-            </button>
+            </MagneticHeroButton>
 
-            <button
-              type="button"
+            <MagneticHeroButton
               className="btn btn-secondary hero-btn-sub btn-tactile"
               onClick={() => scrollTo('about')}
             >
               <User size={16} />
               <span>About Me</span>
-            </button>
+            </MagneticHeroButton>
           </div>
         </div>
 

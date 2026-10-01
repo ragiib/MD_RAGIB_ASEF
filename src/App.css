@@ -3815,5 +3815,856 @@ section {
   }
 }
 
+/* ==========================================================================
+   ADVANCED PHYSICAL INTERACTION SYSTEM & DISTINCT MATERIAL LANGUAGES
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Philosophy: Shallow Physical Box & Layered Parallax
+   -------------------------------------------------------------------------- */
+.shallow-box-material {
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  background: var(--mat-lvl2-glass);
+  backdrop-filter: var(--mat-lvl2-blur);
+  -webkit-backdrop-filter: var(--mat-lvl2-blur);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-bevel), var(--mat-lvl2-shadow);
+  transition: border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.philosophy-specular-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 320px at var(--surface-x, 50%) var(--surface-y, 50%), rgba(56, 189, 248, 0.12), transparent 75%);
+  pointer-events: none;
+  opacity: var(--proximity-glow, 0);
+  transition: opacity 250ms ease;
+  z-index: 1;
+}
+
+.philosophy-depth-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .layer-shallow-float {
+    transform: translate3d(var(--layer-depth-x, 0px), var(--layer-depth-y, 0px), 18px);
+    transition: transform 90ms ease-out;
+  }
+  .shallow-box-material:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: var(--glass-bevel), 0 20px 48px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(56, 189, 248, 0.18);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. About / Builder Dossier: Unfolding Document & Panel Interaction
+   -------------------------------------------------------------------------- */
+.dossier-panel-material {
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  background: var(--mat-lvl2-glass);
+  backdrop-filter: var(--mat-lvl2-blur);
+  -webkit-backdrop-filter: var(--mat-lvl2-blur);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--glass-bevel), var(--mat-lvl2-shadow);
+  transition: border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.dossier-specular-light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 460px at var(--surface-x, 50%) var(--surface-y, 50%), rgba(255, 255, 255, 0.05), transparent 75%);
+  pointer-events: none;
+  opacity: var(--proximity-glow, 0);
+  transition: opacity 250ms ease;
+  z-index: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dossier-panel-material:hover {
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: var(--glass-bevel), 0 24px 56px rgba(0, 0, 0, 0.75), 0 0 30px -5px rgba(56, 189, 248, 0.15);
+  }
+  .dossier-sliding-sheet {
+    transform: translate3d(var(--dossier-slide-x, 0px), var(--dossier-slide-y, 0px), 12px);
+    transition: transform 100ms ease-out;
+  }
+}
+
+.dossier-ref-id {
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.06);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   3. Capabilities: Magnetic Responsive Surface with Metadata Reveal
+   -------------------------------------------------------------------------- */
+.magnetic-surface-box {
+  position: relative;
+  overflow: hidden;
+  background: var(--mat-lvl2-glass);
+  backdrop-filter: var(--mat-lvl2-blur);
+  -webkit-backdrop-filter: var(--mat-lvl2-blur);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  gap: 1.25rem;
+  box-shadow: var(--glass-bevel-subtle), 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
+}
+
+.cap-specular-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 260px at var(--surface-x, 50%) var(--surface-y, 50%), rgba(56, 189, 248, 0.14), transparent 75%);
+  pointer-events: none;
+  opacity: var(--proximity-glow, 0);
+  transition: opacity 250ms ease;
+  z-index: 0;
+}
+
+.cap-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+}
+
+.cap-mini-tag {
+  font-size: 0.65rem;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+}
+
+.cap-metadata-reveal {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-subtle);
+  transition: color 200ms ease;
+}
+
+.metadata-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  opacity: 0.7;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .magnetic-surface-box:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: var(--glass-bevel), 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px -4px rgba(56, 189, 248, 0.15);
+  }
+  .magnetic-surface-box:hover .cap-metadata-reveal {
+    color: var(--accent-cyan);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Roadmap: Spatial Progression & Connected Depth
+   -------------------------------------------------------------------------- */
+.future-pillars-grid {
+  perspective: 1200px;
+}
+
+.spatial-roadmap-card {
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  background: var(--mat-lvl2-glass);
+  backdrop-filter: var(--mat-lvl2-blur);
+  -webkit-backdrop-filter: var(--mat-lvl2-blur);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 2.25rem 1.85rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--glass-bevel), var(--mat-lvl2-shadow);
+  transition: transform 250ms var(--ease-snappy), border-color 250ms ease, box-shadow 250ms ease, opacity 300ms ease, filter 300ms ease;
+}
+
+.spatial-specular-edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.6) 50%, transparent);
+  pointer-events: none;
+}
+
+.spatial-progression-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 350px at var(--surface-x, 50%) var(--surface-y, 50%), rgba(56, 189, 248, 0.1), transparent 75%);
+  pointer-events: none;
+  opacity: var(--proximity-glow, 0);
+  transition: opacity 250ms ease;
+}
+
+.spatial-roadmap-card.pillar-focused {
+  border-color: rgba(56, 189, 248, 0.55);
+  box-shadow: var(--glass-bevel), 0 28px 64px -10px rgba(0, 0, 0, 0.8), 0 0 35px -5px rgba(56, 189, 248, 0.22);
+  z-index: 4;
+}
+
+.spatial-roadmap-card.pillar-receded {
+  opacity: 0.55;
+  filter: saturate(0.85);
+  transform: translateZ(-20px) scale(0.985);
+}
+
+.roadmap-items-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.roadmap-cadence-badge {
+  font-size: 0.65rem;
+  color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-xs);
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--trans-fast);
+  cursor: default;
+}
+
+.roadmap-progression-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.roadmap-bullet {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all var(--trans-fast);
+}
+
+.roadmap-track-line {
+  width: 1px;
+  height: 16px;
+  background: var(--border-subtle);
+  margin-top: 4px;
+  transition: background var(--trans-fast);
+}
+
+.roadmap-item:last-child .roadmap-track-line {
+  display: none;
+}
+
+.roadmap-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+}
+
+.roadmap-item-title {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  transition: color var(--trans-fast);
+}
+
+.roadmap-item-meta {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  transition: color var(--trans-fast);
+}
+
+.roadmap-item.item-active {
+  background: rgba(255, 255, 255, 0.035);
+  transform: translateX(4px);
+}
+
+.roadmap-item.item-active .roadmap-bullet {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+  transform: scale(1.2);
+}
+
+.roadmap-item.item-active .roadmap-track-line {
+  background: var(--accent-cyan);
+}
+
+.roadmap-item.item-active .roadmap-item-title {
+  color: #ffffff;
+}
+
+.roadmap-item.item-active .roadmap-item-meta {
+  color: var(--accent-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   5. Navigation Floating Glass Illumination
+   -------------------------------------------------------------------------- */
+.glass-header {
+  position: relative;
+}
+
+.glass-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 240px at var(--glass-light-x, 50%) var(--glass-light-y, 50%), rgba(56, 189, 248, 0.08), transparent 75%);
+  pointer-events: none;
+  opacity: 0.85;
+  z-index: 0;
+  transition: opacity 200ms ease;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS OVERHAUL (320px -> 375px -> 390px -> 414px -> 430px)
+   ========================================================================== */
+
+/* Universal Overflow & Boundary Guards */
+html, body, #root, .app-shell {
+  max-width: 100vw;
+  width: 100%;
+  overflow-x: clip;
+}
+
+/* Prevent SVG / absolute ambient halos from creating horizontal scrollbars */
+.hero-ambient-horizon,
+.section-ambient-halo,
+.hero-light-cone,
+.glass-construction-field,
+.cinematic-stage-wrap {
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+/* Base Mobile Overrides (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Container Padding */
+  .container {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  /* Section Spacing */
+  section {
+    padding: 4.5rem 0;
+  }
+
+  .section-header {
+    margin-bottom: 2.25rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 0.95rem;
+  }
+
+  /* Cinematic Opening: Hide flanking 3D shards to prevent screen overflow */
+  .shard-left,
+  .shard-right {
+    display: none !important;
+  }
+
+  .shard-center-lens {
+    width: min(92vw, 340px);
+    height: 52px;
+    top: 10%;
+  }
+
+  .cinematic-center-aperture {
+    width: min(88vw, 320px);
+    height: 130px;
+  }
+
+  .cinematic-skip-btn {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.85rem;
+    min-height: 44px;
+    font-size: 0.72rem;
+  }
+
+  .hud-corner.top-left { top: 1rem; left: 1rem; }
+  .hud-corner.top-right { display: none; } /* Avoid overlap with skip button */
+  .hud-corner.bottom-left { bottom: 1rem; left: 1rem; }
+  .hud-corner.bottom-right { bottom: 1rem; right: 1rem; }
+
+  /* Hero Section: Tailored Mobile Composition */
+  .hero-section {
+    padding-top: calc(var(--header-height) + 2rem);
+    padding-bottom: 2.5rem;
+    min-height: auto;
+  }
+
+  .hero-badge-wrap {
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-badge {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
+    max-width: calc(100vw - 2.5rem);
+    white-space: normal;
+    text-align: center;
+  }
+
+  .hero-badge-text {
+    display: inline;
+  }
+
+  .badge-pipe,
+  .badge-tag {
+    display: inline;
+  }
+
+  .signature-name {
+    font-size: clamp(1.85rem, 8.5vw, 2.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    margin-bottom: 1rem;
+    gap: 0.4rem 0.65rem;
+  }
+
+  .hero-name-mark {
+    font-size: 0.95rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .hero-role-wrapper {
+    gap: 0.4rem 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-role-tag {
+    font-size: 1.05rem;
+  }
+
+  .hero-role-separator {
+    font-size: 1rem;
+  }
+
+  .hero-statement {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
+    max-width: 340px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+    gap: 0.75rem;
+    margin-bottom: 2.75rem;
+  }
+
+  .hero-btn-main,
+  .hero-btn-sub {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .hero-telemetry {
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--radius-md);
+    gap: 0.85rem;
+    max-width: 100%;
+  }
+
+  .telemetry-item {
+    gap: 0.2rem;
+  }
+
+  .telemetry-label {
+    font-size: 0.7rem;
+  }
+
+  .telemetry-value {
+    font-size: 0.85rem;
+  }
+
+  /* Philosophy Manifesto Card */
+  .philosophy-manifesto-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
+  }
+
+  .manifesto-headline {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .manifesto-subtext {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* Featured Work */
+  .featured-work-top {
+    margin-bottom: 2rem;
+  }
+
+  .category-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .filter-pill {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  /* Project Card Mobile Composition */
+  .project-card {
+    border-radius: var(--radius-lg);
+  }
+
+  .project-card-visual {
+    height: 180px;
+  }
+
+  .project-card-body {
+    padding: 1.25rem;
+  }
+
+  .project-card-title {
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+
+  .project-card-tagline {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .project-card-footer {
+    padding-top: 1rem;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .btn-card-action {
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+  }
+
+  /* About Preview Mobile */
+  .about-bio-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .about-name {
+    font-size: 1.65rem;
+  }
+
+  .bio-placeholder-box {
+    padding: 1.15rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-actions-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .about-actions-row .btn {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .capability-card {
+    padding: 1.25rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .cap-icon-box {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cap-title {
+    font-size: 1.05rem;
+  }
+
+  .cap-desc {
+    font-size: 0.875rem;
+  }
+
+  /* Future Section Mobile */
+  .future-pillar-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .future-pillar-title {
+    font-size: 1.2rem;
+  }
+
+  .future-dispatch-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+    gap: 1.5rem;
+  }
+
+  .dispatch-title {
+    font-size: 1.3rem;
+  }
+
+  .dispatch-text {
+    font-size: 0.875rem;
+  }
+
+  .dispatch-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .dispatch-input {
+    min-height: 46px;
+    font-size: 0.9rem;
+  }
+
+  .dispatch-submit-btn {
+    min-height: 46px;
+    width: 100%;
+  }
+
+  /* Site Footer Mobile */
+  .site-footer {
+    padding: 3.5rem 0 2.5rem;
+  }
+
+  .footer-top-row {
+    gap: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Modals Mobile Sizing */
+  .modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .modal-container {
+    width: 100%;
+    max-height: 88vh;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+
+  .modal-title {
+    font-size: 1.45rem;
+  }
+
+  .modal-tagline {
+    font-size: 0.9rem;
+  }
+
+  .modal-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .modal-footer {
+    padding: 1rem 1.25rem;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* Project Detail Page Mobile Refinements */
+  .product-hero-title {
+    font-size: clamp(1.85rem, 7vw, 2.75rem);
+    line-height: 1.15;
+  }
+
+  .product-hero-tagline {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .product-hero-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .btn-action-hero,
+  .btn-action-sub {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  .product-hero-specs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .overview-container-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .recruiter-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+}
+
+/* Extra Compact Phones: 320px to 420px */
+@media (max-width: 420px) {
+  .container {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .signature-name {
+    font-size: clamp(1.6rem, 8vw, 2.15rem);
+    gap: 0.35rem 0.5rem;
+  }
+
+  .hero-name-mark {
+    font-size: 0.85rem;
+    padding: 0.15rem 0.45rem;
+  }
+
+  .hero-role-tag {
+    font-size: 0.95rem;
+  }
+
+  .hero-statement {
+    font-size: 0.875rem;
+  }
+
+  /* Project stats 2-column to eliminate overflow */
+  .project-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+  }
+
+  .stat-val {
+    font-size: 0.78rem;
+  }
+
+  .philosophy-metrics-bar {
+    grid-template-columns: 1fr 1fr;
+    padding: 0.85rem;
+    gap: 0.65rem;
+  }
+
+  .spec-metric-label {
+    font-size: 0.65rem;
+  }
+
+  .spec-metric-value {
+    font-size: 0.85rem;
+  }
+
+  .category-filter-bar {
+    gap: 0.35rem;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.725rem;
+  }
+}
+
+/* Touch devices guard: Clean static accessible state without broken hover locks */
+@media (hover: none) and (pointer: coarse) {
+  .project-card:hover,
+  .shallow-box-material:hover,
+  .dossier-panel-material:hover,
+  .magnetic-surface-box:hover,
+  .spatial-roadmap-card:hover {
+    transform: none !important;
+  }
+  .card-ambient-glow,
+  .philosophy-specular-light,
+  .dossier-specular-light,
+  .cap-specular-glow,
+  .spatial-progression-glow {
+    opacity: 0.6 !important;
+  }
+}
+
+
 
 
